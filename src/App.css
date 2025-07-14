@@ -1,42 +1,146 @@
-#root {
+/* === Paleta de colores === */
+:root {
+  --fondo-principal: #ffffff;
+  --texto-principal: #212121;
+  --boton-enlace: #1a237e;
+  --hover: #26a69a;
+  --fondo-tarjeta: #f5f5f5;
+  --acento: #fbc02d;
+}
+
+/* === Estructura general === */
+body {
+  margin: 0;
+  background-color: var(--fondo-principal);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--texto-principal);
+}
+
+.home-container {
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+/* === Título === */
+.titulo-principal {
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+  color: var(--texto-principal);
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* === Input de búsqueda === */
+.input-busqueda {
+  padding: 10px;
+  width: 220px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 2rem;
+  font-size: 1rem;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+/* === Contenedor de tarjetas === */
+.contenedor-libros {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
 }
 
-.card {
-  padding: 2em;
+/* === Tarjeta individual de libro === */
+.card-libro {
+  background-color: var(--fondo-tarjeta);
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  width: 200px;
+  padding: 15px;
+  text-align: center;
+  transition: transform 0.2s ease, border-color 0.2s;
 }
 
-.read-the-docs {
-  color: #888;
+.card-libro:hover {
+  transform: scale(1.03);
+  border-color: var(--hover);
+}
+
+/* === Imagen del libro === */
+.imagen-libro {
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
+
+/* === Botón de favorito === */
+.card-libro button {
+  background-color: var(--boton-enlace);
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s;
+}
+
+.card-libro button:hover {
+  background-color: var(--hover);
+}
+
+/* === Enlace de detalle === */
+.card-libro a {
+  display: inline-block;
+  margin-top: 8px;
+  color: var(--boton-enlace);
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.card-libro a:hover {
+  color: var(--hover);
+}
+
+/* === Mensaje de no resultados === */
+.mensaje-vacio {
+  font-size: 1.2rem;
+  color: var(--acento);
+}
+
+/* === Detalle del libro === */
+.detalle-libro {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.imagen-detalle {
+  width: 220px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.info-detalle {
+  max-width: 400px;
+  text-align: left;
+}
+
+/* === Botón volver === */
+.boton-volver {
+  background-color: var(--boton-enlace);
+  color: white;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-bottom: 20px;
+}
+
+.boton-volver:hover {
+  background-color: var(--hover);
 }
