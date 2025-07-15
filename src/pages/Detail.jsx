@@ -20,7 +20,7 @@ function Detail() {
         <div className="info-detalle">
           <h2>{libro.titulo}</h2>
           <p><strong>Autor:</strong> {libro.autor}</p>
-          <p><strong>Descripción:</strong> Próximamente descripción detallada...</p>
+          <p><strong>Descripción:</strong> {libro.descripcion} </p>
         </div>
       </div>
     </div>
