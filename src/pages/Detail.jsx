@@ -21,6 +21,7 @@ function Detail() {
           <h2>{libro.titulo}</h2>
           <p><strong>Autor:</strong> {libro.autor}</p>
           <p><strong>Descripción:</strong> {libro.descripcion} </p>
+          <p><strong>Año:</strong>{libro.año}</p>
         </div>
       </div>
     </div>
