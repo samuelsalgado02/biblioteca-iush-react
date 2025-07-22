@@ -1,7 +1,7 @@
-import { useState, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
-import libros from "../libros";
 import { FavoritesContext } from "../context/FavoritesContext";
+import { getLibros } from "../api"; // importar conexión backend
 import "../App.css";
 
 function Usuario() {
@@ -10,39 +10,47 @@ function Usuario() {
   const [orden, setOrden] = useState("az");
 
   const [categoria, setCategoria] = useState("");
-  const [año, setAño] = useState("");
   const [idioma, setIdioma] = useState("");
   const [disponibilidad, setDisponibilidad] = useState("");
   const [nivel, setNivel] = useState("");
   const [etiqueta, setEtiqueta] = useState("");
 
+  const [libros, setLibros] = useState([]); // se cargan del backend
+
   const { addFavorite } = useContext(FavoritesContext);
+
+  useEffect(() => {
+    const fetchLibros = async () => {
+      try {
+        const librosDesdeBackend = await getLibros();
+        setLibros(librosDesdeBackend);
+      } catch (error) {
+        console.error("Error al obtener libros:", error);
+      }
+    };
+
+    fetchLibros();
+  }, []);
 
   const librosFiltrados = libros
     .filter((libro) =>
-      libro.titulo.toLowerCase().includes(busquedaTitulo.toLowerCase())
+      libro.titulo?.toLowerCase().includes(busquedaTitulo.toLowerCase())
     )
     .filter((libro) =>
-      libro.autor.toLowerCase().includes(busquedaAutor.toLowerCase())
+      libro.autor?.toLowerCase().includes(busquedaAutor.toLowerCase())
     )
-    .filter((libro) =>
-      categoria ? libro.categoria === categoria : true
-    )
-    .filter((libro) =>
-      año ? libro.año.toString() === año : true
-    )
-    .filter((libro) =>
-      idioma ? libro.idioma === idioma : true
-    )
+    .filter((libro) => (categoria ? libro.categoria === categoria : true))
+    .filter((libro) => (idioma ? libro.idioma === idioma : true))
     .filter((libro) =>
       disponibilidad ? libro.disponibilidad === disponibilidad : true
     )
-    .filter((libro) =>
-      nivel ? libro.nivel === nivel : true
-    )
+    .filter((libro) => (nivel ? libro.nivel === nivel : true))
     .filter((libro) =>
       etiqueta
-        ? libro.etiquetas.some((e) =>
+        ? (Array.isArray(libro.etiquetas)
+            ? libro.etiquetas
+            : JSON.parse(libro.etiquetas || "[]")
+          ).some((e) =>
             e.toLowerCase().includes(etiqueta.toLowerCase())
           )
         : true
@@ -66,34 +74,42 @@ function Usuario() {
           className="input-busqueda"
         />
 
-        <select value={categoria} onChange={(e) => setCategoria(e.target.value)} className="select-orden">
+        <select
+          value={categoria}
+          onChange={(e) => setCategoria(e.target.value)}
+          className="select-orden"
+        >
           <option value="">Todas las categorías</option>
           <option value="programacion">Programación</option>
           <option value="novela">Novela</option>
           <option value="historia">Historia</option>
         </select>
 
-        <input
-          type="number"
-          placeholder="Año de publicación"
-          value={año}
-          onChange={(e) => setAño(e.target.value)}
-          className="input-busqueda"
-        />
-
-        <select value={idioma} onChange={(e) => setIdioma(e.target.value)} className="select-orden">
+        <select
+          value={idioma}
+          onChange={(e) => setIdioma(e.target.value)}
+          className="select-orden"
+        >
           <option value="">Todos los idiomas</option>
           <option value="es">Español</option>
           <option value="en">Inglés</option>
         </select>
 
-        <select value={disponibilidad} onChange={(e) => setDisponibilidad(e.target.value)} className="select-orden">
+        <select
+          value={disponibilidad}
+          onChange={(e) => setDisponibilidad(e.target.value)}
+          className="select-orden"
+        >
           <option value="">Todas</option>
           <option value="disponible">Disponible</option>
           <option value="prestado">Prestado</option>
         </select>
 
-        <select value={nivel} onChange={(e) => setNivel(e.target.value)} className="select-orden">
+        <select
+          value={nivel}
+          onChange={(e) => setNivel(e.target.value)}
+          className="select-orden"
+        >
           <option value="">Todos los niveles</option>
           <option value="infantil">Infantil</option>
           <option value="juvenil">Juvenil</option>
@@ -122,7 +138,7 @@ function Usuario() {
       </aside>
 
       <main className="contenido-principal">
-        <h1 className="titulo-principal"> Biblioteca IUSH</h1>
+        <h1 className="titulo-principal">Biblioteca IUSH</h1>
 
         <input
           type="text"
