@@ -1,25 +1,54 @@
+// src/pages/login.jsx
+
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import axios from 'axios';
 
 function Login() {
-  const { login } = useAuth(); // ✅ usamos login del contexto
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const { login } = useAuth();
+  const [codigo, setCodigo] = useState('');
+  const [contrasena, setContrasena] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Autenticación básica (solo para pruebas)
-    if (username === 'admin' && password === '123') {
-      login(username, 'admin'); // ✅ guardamos como admin
-      navigate('/admin');
-    } else if (username === 'usuario' && password === '123') {
-      login(username, 'usuario'); // ✅ guardamos como usuario
-      navigate('/usuario');
-    } else {
-      alert('Credenciales incorrectas');
+    if (!codigo || !contrasena) {
+      alert('⚠️ Completa todos los campos antes de continuar.');
+      return;
+    }
+
+    try {
+      const response = await axios.post('http://localhost:3000/api/usuarios/login', {
+        codigo,
+        contrasena,
+      });
+
+      const { rol, nombre } = response.data;
+
+      // Guardar en contexto de autenticación
+      login(nombre, rol);
+
+      if (rol === 'admin') {
+        alert(`✅ Bienvenido administrador ${nombre}`);
+        navigate('/admin');
+      } else if (rol === 'usuario') {
+        alert(`✅ Bienvenido ${nombre}`);
+        navigate('/usuario');
+      } else {
+        alert('⚠️ Rol no reconocido. Contacta a soporte.');
+      }
+    } catch (error) {
+      console.error('❌ Error al iniciar sesión:', error);
+
+      if (error.response && error.response.status === 401) {
+        alert('❌ Código o contraseña incorrectos.');
+      } else if (error.response) {
+        alert(`❌ Error: ${error.response.data.error}`);
+      } else {
+        alert('❌ Error de conexión con el servidor.');
+      }
     }
   };
 
@@ -30,15 +59,15 @@ function Login() {
         <form onSubmit={handleSubmit}>
           <input
             type="text"
-            placeholder="Usuario"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            placeholder="Código de estudiante"
+            value={codigo}
+            onChange={(e) => setCodigo(e.target.value)}
           /><br />
           <input
             type="password"
             placeholder="Contraseña"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={contrasena}
+            onChange={(e) => setContrasena(e.target.value)}
           /><br />
           <button type="submit">Ingresar</button>
         </form>

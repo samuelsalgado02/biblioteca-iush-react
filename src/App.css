@@ -351,3 +351,28 @@ body {
   background-color: #c0392b;
 }
 
+/*footer */
+
+.footer-iush {
+  background-color: #005596; /* Azul institucional IUSH */
+  color: white;
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.9rem;
+}
+
+.footer-iush p {
+  margin: 0.2rem 0;
+}
+
+@media (max-width: 768px) {
+  .footer-iush {
+    font-size: 0.8rem;
+    padding: 0.7rem;
+  }
+}
+
+
+
+
+

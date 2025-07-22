@@ -1,14 +1,13 @@
 // src/pages/Admin.jsx
 
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom"; // <--- IMPORTANTE
 import { getLibros, deleteLibro } from "../api";
 import "../App.css";
 
-
-
-
 function Admin() {
   const [libros, setLibros] = useState([]);
+  const navigate = useNavigate(); // <--- NECESARIO PARA REDIRECCIONAR
 
   useEffect(() => {
     const fetchLibros = async () => {
@@ -32,15 +31,25 @@ function Admin() {
     }
   };
 
+  // ✅ NUEVO: Función para cerrar sesión
+  const handleLogout = () => {
+    localStorage.removeItem("token"); // o sessionStorage según uses
+    navigate("/"); // redirige al login
+  };
+
   return (
     <div className="admin-wrapper">
       <aside className="admin-sidebar">
         <h2>Panel de Administración</h2>
         <ul>
           <li><i className="fas fa-book"></i> Libros</li>
-          <li><i className="fas fa-users"></i> Usuarios</li>
+          <li onClick={() => window.location.href = "/usuarios"}>
+            <i className="fas fa-users"></i> Usuarios
+          </li>
           <li><i className="fas fa-chart-bar"></i> Estadísticas</li>
-          <li><i className="fas fa-sign-out-alt"></i> Cerrar sesión</li>
+          <li onClick={handleLogout} style={{ cursor: "pointer" }}>
+            <i className="fas fa-sign-out-alt"></i> Cerrar sesión
+          </li>
         </ul>
       </aside>
 
