@@ -1,14 +1,13 @@
-// src/App.jsx
-
 import { Routes, Route } from 'react-router-dom';
 import Navbar from "./components/Navbar";
 import Detail from "./pages/Detail";
 import Favorites from "./pages/Favorites";
-import Admin from './pages/Admin';
+import Admin from "./pages/LibrosAdmin";
 import Usuario from './pages/Usuario';
+import Usuarios from './pages/Usuarios';
 import Login from './pages/login';
 import Footer from "./components/Footer"; // <-- NUEVO
-import Usuarios from './pages/Usuarios'; // <-- NUEVO
+
 
 function App() {
   return (
@@ -20,11 +19,12 @@ function App() {
         <Route path="/favoritos" element={<Favorites />} />
         <Route path="/admin" element={<Admin />} />
         <Route path="/usuario" element={<Usuario />} />
-        <Route path="/usuarios" element={<Usuarios />} />   {/* <-- NUEVO: ruta de gestión de usuarios */}
+        <Route path="/Usuarios" element={<Usuarios />} />
       </Routes>
-      <Footer />  {/* Footer persistente en todas las páginas */}
+      <Footer />  {/* <-- NUEVO: Aquí se agrega el Footer */}
     </>
   );
 }
 
 export default App;
+

@@ -1,4 +1,4 @@
-// src/pages/Admin.jsx
+// src/pages/LibrosAdmin.jsx
 
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; // <--- IMPORTANTE

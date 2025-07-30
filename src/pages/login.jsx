@@ -1,5 +1,3 @@
-// src/pages/login.jsx
-
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
@@ -25,11 +23,16 @@ function Login() {
         contrasena,
       });
 
-      const { rol, nombre } = response.data;
+      const { rol, nombre, usuario_id } = response.data;
 
-      // Guardar en contexto de autenticación
-      login(nombre, rol);
+      // Guardamos los datos del usuario en localStorage
+      const usuarioEncontrado = { nombre, rol, usuario_id };
+      localStorage.setItem("usuario", JSON.stringify(usuarioEncontrado));
 
+      // También los almacenamos en el contexto de autenticación
+      login(nombre, rol, usuario_id);
+
+      // Redirección según el rol
       if (rol === 'admin') {
         alert(`✅ Bienvenido administrador ${nombre}`);
         navigate('/admin');
@@ -39,6 +42,7 @@ function Login() {
       } else {
         alert('⚠️ Rol no reconocido. Contacta a soporte.');
       }
+
     } catch (error) {
       console.error('❌ Error al iniciar sesión:', error);
 

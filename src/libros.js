@@ -67,7 +67,7 @@ const libros = [
     descripcion: "Cubre todos los fundamentos básicos de enfermería.",
     categoria: "salud",
     idioma: "es",
-    disponibilidad: "disponible",
+    disponibilidad: "true",
     nivel: "profesional",
     etiquetas: ["enfermería", "salud", "cuidado"]
   },

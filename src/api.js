@@ -1,6 +1,5 @@
-
-
 const API_URL = "http://localhost:3000/api/libros";
+const API_PRESTAMOS_URL = "http://localhost:3000/api/prestamos";
 
 /**
  * Obtiene todos los libros desde el backend
@@ -56,5 +55,28 @@ export async function deleteLibro(id) {
     return response.json();
 }
 
+/**
+ * Verifica si un libro está disponible para préstamo en una fecha específica
+ * @param {Object} datos - { libro_id, fecha_inicio, fecha_fin }
+ * @returns {Promise<Object>} - { disponible: true/false, mensaje: "..." }
+ */
+export async function verificarDisponibilidadLibro(datos) {
+    try {
+        const response = await fetch(`${API_PRESTAMOS_URL}/verificar-disponibilidad`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(datos),
+        });
 
+        if (!response.ok) {
+            throw new Error("Error al verificar disponibilidad");
+        }
 
+        return await response.json();
+    } catch (error) {
+        console.error("Error en verificarDisponibilidadLibro:", error);
+        throw error;
+    }
+}
