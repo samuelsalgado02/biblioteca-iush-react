@@ -14,7 +14,6 @@ function Detail() {
   const [fechaFin, setFechaFin] = useState("");
   const [usuario, setUsuario] = useState(null);
 
-  // Obtener usuario desde localStorage
   useEffect(() => {
     const usuarioGuardado = localStorage.getItem("usuario");
     if (usuarioGuardado) {
@@ -22,7 +21,6 @@ function Detail() {
     }
   }, []);
 
-  // Cargar reserva existente si hay
   useEffect(() => {
     fetch(`http://localhost:3000/api/prestamos/${id}`)
       .then((res) => res.json())
@@ -45,7 +43,8 @@ function Detail() {
       return;
     }
 
-    const diffDias = (new Date(fechaFin) - new Date(fechaInicio)) / (1000 * 60 * 60 * 24);
+    const diffDias =
+      (new Date(fechaFin) - new Date(fechaInicio)) / (1000 * 60 * 60 * 24);
     if (diffDias < 0 || diffDias > 7) {
       alert("⚠️ Solo puedes reservar entre 1 y 7 días.");
       return;
@@ -54,18 +53,21 @@ function Detail() {
     setReservando(true);
 
     const datosReserva = {
-      usuario_id: usuario.id, // ← Ahora sí dinámico
+      usuario_id: usuario.id, // ✅ Cambiado correctamente
       libro_id: parseInt(id),
       fecha_inicio: fechaInicio,
       fecha_fin: fechaFin,
     };
 
     try {
-      const resDisponibilidad = await fetch("http://localhost:3000/api/prestamos/disponible", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(datosReserva),
-      });
+      const resDisponibilidad = await fetch(
+        "http://localhost:3000/api/prestamos/verificar-disponibilidad",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(datosReserva),
+        }
+      );
 
       const disponible = await resDisponibilidad.json();
 
@@ -80,11 +82,12 @@ function Detail() {
         body: JSON.stringify(datosReserva),
       });
 
-      const resultado = await res.json();
-
       if (!res.ok) {
-        throw new Error(resultado.mensaje || "Error desconocido");
+        const errorData = await res.json();
+        throw new Error(errorData.mensaje || "Error desconocido");
       }
+
+      const resultado = await res.json();
 
       setReserva({
         fecha_inicio: fechaInicio,
@@ -93,8 +96,8 @@ function Detail() {
 
       alert("✅ Reserva realizada con éxito");
     } catch (err) {
-      console.error(err);
-      alert("❌ No se pudo reservar el libro ");
+      console.error("❌ Error al reservar:", err);
+      alert("❌ No se pudo reservar el libro");
     } finally {
       setReservando(false);
     }
@@ -102,18 +105,31 @@ function Detail() {
 
   return (
     <div className="home-container">
-      <button className="boton-volver" onClick={() => navigate(-1)}>⬅ Volver</button>
+      <button className="boton-volver" onClick={() => navigate(-1)}>
+        ⬅ Volver
+      </button>
 
       <div className="detalle-libro">
-        <img src={libro?.imagen} alt={libro?.titulo} className="imagen-detalle" />
+        <img
+          src={libro?.imagen}
+          alt={libro?.titulo}
+          className="imagen-detalle"
+        />
         <div className="info-detalle">
           <h2>{libro?.titulo || "Título no disponible"}</h2>
-          <p><strong>Autor:</strong> {libro?.autor || "Autor no disponible"}</p>
-          <p><strong>Descripción:</strong> {libro?.descripcion || "Sin descripción"}</p>
+          <p>
+            <strong>Autor:</strong> {libro?.autor || "Autor no disponible"}
+          </p>
+          <p>
+            <strong>Descripción:</strong>{" "}
+            {libro?.descripcion || "Sin descripción"}
+          </p>
 
           {reserva ? (
             <p className="reserva-activa">
-              📅 Este libro está reservado desde <strong>{reserva.fecha_inicio}</strong> hasta <strong>{reserva.fecha_fin}</strong>.
+              📅 Este libro está reservado desde{" "}
+              <strong>{reserva.fecha_inicio}</strong> hasta{" "}
+              <strong>{reserva.fecha_fin}</strong>.
             </p>
           ) : (
             <>
@@ -142,7 +158,7 @@ function Detail() {
                 onClick={manejarReserva}
                 disabled={reservando}
               >
-                {reservando ? "Reservando..." : "📘 Reservar este libro"}
+                {reservando ? "Reservando..." : " Reservar este libro"}
               </button>
             </>
           )}
