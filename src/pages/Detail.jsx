@@ -43,8 +43,18 @@ function Detail() {
       return;
     }
 
-    const diffDias =
-      (new Date(fechaFin) - new Date(fechaInicio)) / (1000 * 60 * 60 * 24);
+    const hoy = new Date();
+    hoy.setHours(0, 0, 0, 0); // eliminar hora para comparar solo fecha
+
+    const inicio = new Date(fechaInicio);
+    const fin = new Date(fechaFin);
+
+    if (inicio < hoy) {
+      alert("❌ No puedes reservar en una fecha que ya pasó.");
+      return;
+    }
+
+    const diffDias = (fin - inicio) / (1000 * 60 * 60 * 24);
     if (diffDias < 0 || diffDias > 7) {
       alert("⚠️ Solo puedes reservar entre 1 y 7 días.");
       return;
@@ -53,7 +63,7 @@ function Detail() {
     setReservando(true);
 
     const datosReserva = {
-      usuario_id: usuario.id, // ✅ Cambiado correctamente
+      usuario_id: usuario.id,
       libro_id: parseInt(id),
       fecha_inicio: fechaInicio,
       fecha_fin: fechaFin,

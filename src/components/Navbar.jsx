@@ -1,17 +1,18 @@
 import React from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import Login from "../pages/login";
 
 function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
+
+  // ✅ Obtenemos el rol desde localStorage
   const usuario = JSON.parse(localStorage.getItem("usuarioLogueado"));
 
-  // Rutas consideradas como "admin"
-  const rutasAdmin = ["/admin", "/usuarios", "/librosadmin", "/reservas" , "/login" , "/"];
-  const rutaActual = location.pathname.toLowerCase();
-  const esRutaAdmin = rutasAdmin.some((ruta) => rutaActual.startsWith(ruta));
+  // 🔒 Ocultamos la barra si es admin
+  if (usuario?.rol === "admin") return null;
 
+  // 🔒 Ocultamos enlaces si estamos en /login o /admin
+  const ocultarEnlaces = location.pathname === "/" || location.pathname === "/admin" || location.pathname === "/usuarios" || location.pathname === "/reservas";
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("usuarioLogueado");
@@ -28,7 +29,7 @@ function Navbar() {
         padding: "10px 20px",
       }}
     >
-      {/* 🎯 Siempre mostrar esta parte */}
+      {/* Logo y título */}
       <div style={{ display: "flex", alignItems: "center" }}>
         <img
           src="https://yt3.ggpht.com/a/AATXAJxpNCM6wOnN_v0Us7BVRamfzOAgvziBSBNa2A=s900-c-k-c0xffffffff-no-rj-mo"
@@ -44,8 +45,8 @@ function Navbar() {
         <h1 style={{ color: "#FFFFFF", margin: 0 }}>Biblioteca Virtual</h1>
       </div>
 
-      {/* ❌ Ocultar esta parte si estás en ruta admin */}
-      {!esRutaAdmin && (
+      {/* Enlaces: se ocultan si estamos en /login o /admin */}
+      {!ocultarEnlaces && (
         <div style={{ display: "flex", gap: "15px", alignItems: "center" }}>
           <Link
             to="/usuario/"
@@ -88,4 +89,4 @@ function Navbar() {
   );
 }
 
-export default Navbar;
+export default Navbar;
