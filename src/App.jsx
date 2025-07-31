@@ -7,6 +7,8 @@ import Usuario from './pages/Usuario';
 import Usuarios from './pages/Usuarios';
 import Login from './pages/login';
 import Footer from "./components/Footer"; // <-- NUEVO
+import Reservas from "./pages/Reservas"; // ajusta el path si es necesario
+
 
 
 function App() {
@@ -20,6 +22,8 @@ function App() {
         <Route path="/admin" element={<Admin />} />
         <Route path="/usuario" element={<Usuario />} />
         <Route path="/Usuarios" element={<Usuarios />} />
+        <Route path="/reservas" element={<Reservas />} />
+
       </Routes>
       <Footer />  {/* <-- NUEVO: Aquí se agrega el Footer */}
     </>

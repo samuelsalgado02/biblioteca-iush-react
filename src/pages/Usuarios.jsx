@@ -1,20 +1,17 @@
-Usuarios
+// src/pages/Usuarios.jsx
+
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; // ✅ Importar useNavigate
 import axios from "axios";
 import "../App.css";
 
 function Usuarios() {
   const [usuarios, setUsuarios] = useState([]);
-  const [busqueda, setBusqueda] = useState("");
   const [nuevoUsuario, setNuevoUsuario] = useState({
     nombre: "",
     codigo: "",
     contrasena: "",
     rol: "usuario",
   });
-
-  const navigate = useNavigate(); // ✅ Inicializar useNavigate
 
   const fetchUsuarios = async () => {
     try {
@@ -68,12 +65,12 @@ function Usuarios() {
   };
 
   const handleLogout = () => {
+    // Aquí puedes limpiar el token y redirigir al login si es necesario
     window.location.href = "/";
   };
 
   return (
     <div className="admin-wrapper">
-      {/* Panel lateral */}
       <aside className="admin-sidebar">
         <h2>Panel de Administración</h2>
         <ul>
@@ -83,8 +80,8 @@ function Usuarios() {
           <li onClick={() => window.location.href = "/usuarios"}>
             <i className="fas fa-users"></i> Usuarios
           </li>
-          <li>
-            <i className="fas fa-chart-bar"></i> Estadísticas
+          <li onClick={() => window.location.href = "/reservas"}>
+            <i className="fas fa-calendar-check"></i> Reservas
           </li>
           <li onClick={handleLogout} style={{ cursor: "pointer" }}>
             <i className="fas fa-sign-out-alt"></i> Cerrar sesión
@@ -92,14 +89,9 @@ function Usuarios() {
         </ul>
       </aside>
 
-      {/* Contenido principal */}
       <div className="admin-content">
-        {/* ✅ Botón para volver al panel */}
-       
-
         <h1>Gestión de Usuarios</h1>
 
-        {/* Formulario para agregar usuario */}
         <div className="form-agregar">
           <input
             type="text"
@@ -133,17 +125,6 @@ function Usuarios() {
           <button onClick={handleAddUsuario}>Agregar Usuario</button>
         </div>
 
-        {/* Barra de búsqueda */}
-        <div className="barra-busqueda">
-          <input
-            type="text"
-            placeholder="Buscar por nombre o código..."
-            value={busqueda}
-            onChange={(e) => setBusqueda(e.target.value)}
-          />
-        </div>
-
-        {/* Tabla de usuarios */}
         {usuarios.length === 0 ? (
           <p>No hay usuarios registrados.</p>
         ) : (
@@ -158,28 +139,22 @@ function Usuarios() {
               </tr>
             </thead>
             <tbody>
-              {usuarios
-                .filter(
-                  (usuario) =>
-                    usuario.nombre.toLowerCase().includes(busqueda.toLowerCase()) ||
-                    usuario.codigo.toLowerCase().includes(busqueda.toLowerCase())
-                )
-                .map((usuario) => (
-                  <tr key={usuario.id}>
-                    <td>{usuario.id}</td>
-                    <td>{usuario.nombre}</td>
-                    <td>{usuario.codigo}</td>
-                    <td>{usuario.rol}</td>
-                    <td>
-                      <button
-                        className="boton-eliminar"
-                        onClick={() => handleEliminar(usuario.id)}
-                      >
-                        <i className="fas fa-trash-alt"></i> Eliminar
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+              {usuarios.map((usuario) => (
+                <tr key={usuario.id}>
+                  <td>{usuario.id}</td>
+                  <td>{usuario.nombre}</td>
+                  <td>{usuario.codigo}</td>
+                  <td>{usuario.rol}</td>
+                  <td>
+                    <button
+                      className="boton-eliminar"
+                      onClick={() => handleEliminar(usuario.id)}
+                    >
+                      <i className="fas fa-trash-alt"></i> Eliminar
+                    </button>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         )}

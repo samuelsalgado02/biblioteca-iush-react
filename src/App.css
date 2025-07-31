@@ -372,6 +372,79 @@ body {
   }
 }
 
+/* resrevas */
+
+
+
+
+.admin-sidebar h2 {
+  margin-bottom: 20px;
+}
+
+.admin-sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.admin-sidebar li {
+  margin: 10px 0;
+  cursor: pointer;
+}
+
+.admin-sidebar li:hover {
+  text-decoration: underline;
+}
+
+.reservas-container {
+  flex-grow: 1;
+  padding: 1.5rem;
+}
+
+.reservas-header {
+  margin-bottom: 1rem;
+}
+
+.tabla-scroll {
+  overflow-x: auto;
+}
+
+.tabla-reservas {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tabla-reservas th,
+.tabla-reservas td {
+  padding: 8px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.tabla-reservas thead {
+  background-color: #0f2f6f;
+  color: #fff;
+}
+
+.tabla-reservas tr {
+  border-bottom: 1px solid #ccc;
+}
+
+.btn-eliminar {
+  background-color: #c0392b;
+  color: #fff;
+  border: none;
+  padding: 6px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.btn-eliminar:hover {
+  background-color: #a93226;
+}
+
+.error {
+  color: red;
+}
 
 
 

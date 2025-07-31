@@ -47,7 +47,9 @@ function Admin() {
           <li onClick={() => window.location.href = "/usuarios"}>
             <i className="fas fa-users"></i> Usuarios
           </li>
-          <li><i className="fas fa-chart-bar"></i> Estadísticas</li>
+          <li onClick={() => window.location.href = "/reservas"}>
+            <i className="fas fa-calendar-check"></i> Reservas
+          </li>
           <li onClick={handleLogout} style={{ cursor: "pointer" }}>
             <i className="fas fa-sign-out-alt"></i> Cerrar sesión
           </li>
