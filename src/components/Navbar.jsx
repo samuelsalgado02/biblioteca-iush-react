@@ -8,7 +8,7 @@ function Navbar() {
   const usuario = JSON.parse(localStorage.getItem("usuarioLogueado"));
 
   // Rutas consideradas como "admin"
-  const rutasAdmin = ["/admin", "/usuarios", "/librosadmin", "/reservas" , "/Login"];
+  const rutasAdmin = ["/admin", "/usuarios", "/librosadmin", "/reservas" , "/login" , "/"];
   const rutaActual = location.pathname.toLowerCase();
   const esRutaAdmin = rutasAdmin.some((ruta) => rutaActual.startsWith(ruta));
 
