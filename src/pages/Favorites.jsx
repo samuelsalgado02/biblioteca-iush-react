@@ -1,13 +1,19 @@
+Favorites
 import { useContext } from "react";
+import { useNavigate } from "react-router-dom"; // <--- IMPORTANTE
 import { FavoritesContext } from "../context/FavoritesContext";
 import { Link } from "react-router-dom";
 import "../App.css";
 
 function Favorites() {
   const { favorites, removeFavorite } = useContext(FavoritesContext);
-
+  const navigate = useNavigate();
   return (
     <div className="home-container">
+      {/* ✅ Botón para volver al panel */}
+        <button onClick={() => navigate("/usuario/")} className="boton-volver">
+          ← Volver al Inicio
+        </button>
       <h2 className="titulo-principal">⭐ Mis Libros Favoritos</h2>
 
       {favorites.length === 0 ? (

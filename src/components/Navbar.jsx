@@ -1,7 +1,23 @@
+Navbar
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Navbar() {
+  const navigate = useNavigate();
+
+  // ✅ Obtenemos el rol desde localStorage
+  const usuario = JSON.parse(localStorage.getItem("usuarioLogueado"));
+
+  // 🔒 Ocultamos si el rol es admin
+  if (usuario?.rol === "admin") return null;
+
+  // 🔒 Función para cerrar sesión
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("usuarioLogueado");
+    navigate("/"); // Redirige al login o página principal
+  };
+
   return (
     <nav
       style={{
@@ -28,15 +44,15 @@ function Navbar() {
         <h1 style={{ color: "#FFFFFF", margin: 0 }}>Biblioteca Virtual</h1>
       </div>
 
-      {/* Enlaces de navegación */}
-      <div style={{ display: "flex", gap: "15px" }}>
+      {/* Enlaces */}
+      <div style={{ display: "flex", gap: "15px", alignItems: "center" }}>
         <Link
-          to="/"
+          to="/usuario/"
           style={{
             color: "white",
             textDecoration: "none",
             fontSize: "16px",
-            fontFamily: "inherit", // Misma fuente que el h1
+            fontFamily: "inherit",
           }}
         >
           Inicio
@@ -47,11 +63,25 @@ function Navbar() {
             color: "white",
             textDecoration: "none",
             fontSize: "16px",
-            fontFamily: "inherit", // Misma fuente
+            fontFamily: "inherit",
           }}
         >
-           Favoritos
+          Favoritos
         </Link>
+        {/* Botón cerrar sesión */}
+        <button
+          onClick={handleLogout}
+          style={{
+            backgroundColor: "transparent",
+            border: "none",
+            color: "white",
+            cursor: "pointer",
+            fontSize: "16px",
+            fontFamily: "inherit",
+          }}
+        >
+          Cerrar sesión
+        </button>
       </div>
     </nav>
   );
